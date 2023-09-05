@@ -1,6 +1,6 @@
 package com.dimsen.pasaronline.utils;
 
-import com.dimsen.pasaronline.data.DataItem;
+import com.dimsen.pasaronline.data.Items;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -10,5 +10,5 @@ public interface ItemsApi {
 
     @Headers(value = "Content-Type:application/json")
     @GET(value = "item")
-    Call<DataItem> DATA_ITEM_CALL();
+    Call<Items> DATA_ITEM_CALL();
 }
