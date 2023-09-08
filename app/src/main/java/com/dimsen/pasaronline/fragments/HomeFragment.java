@@ -24,6 +24,7 @@ import com.dimsen.pasaronline.adapters.ItemsAdapter;
 import com.dimsen.pasaronline.data.DataItem;
 import com.dimsen.pasaronline.data.Items;
 import com.dimsen.pasaronline.requests.ApiService;
+import com.dimsen.pasaronline.responses.ItemsResponse;
 import com.dimsen.pasaronline.utils.ItemsApi;
 
 import java.util.ArrayList;
@@ -109,15 +110,16 @@ public class HomeFragment extends Fragment {
 
     private void getApiResponse() {
         ItemsApi itemsApi = ApiService.getItemsApi();
-        Call<Items> itemsCall = itemsApi.DATA_ITEM_CALL();
 
-        itemsCall.enqueue(new Callback<Items>() {
+        Call<ItemsResponse> itemsResponseCall = itemsApi.DATA_ITEM_CALL();
+
+        itemsResponseCall.enqueue(new Callback<ItemsResponse>() {
             @Override
-            public void onResponse(Call<Items> call, Response<Items> response) {
+            public void onResponse(Call<ItemsResponse> call, Response<ItemsResponse> response) {
                 dataItemArrayList.clear();
                 Log.d("RESULT", "RESPONSE" + response.code());
                 if (response.body() != null) {
-                    dataItemArrayList.addAll(response.body().getData());
+                    dataItemArrayList.addAll(response.body().getDataItems());
                     Log.d("DATA", dataItemArrayList.toString());
                 }
                 itemsAdapter = new ItemsAdapter(dataItemArrayList, getActivity().getApplicationContext());
@@ -125,7 +127,7 @@ public class HomeFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<Items> call, Throwable t) {
+            public void onFailure(Call<ItemsResponse> call, Throwable t) {
                 Log.d("RESULT", "FAILURE", t);
             }
         });

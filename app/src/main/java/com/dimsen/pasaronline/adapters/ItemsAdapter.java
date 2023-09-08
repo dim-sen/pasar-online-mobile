@@ -1,12 +1,17 @@
 package com.dimsen.pasaronline.adapters;
 
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.dimsen.pasaronline.R;
 import com.dimsen.pasaronline.data.DataItem;
 
 import java.util.ArrayList;
@@ -24,22 +29,38 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemsViewHol
     @NonNull
     @Override
     public ItemsAdapter.ItemsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return null;
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_items, parent, false);
+        return new ItemsViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ItemsAdapter.ItemsViewHolder holder, int position) {
+        DataItem dataItem = dataItems.get(position);
+        Glide.with(holder.imageViewItemImage.getContext())
+                .load("data:image/jpeg;base64," + dataItem.getItemImage())
+                .centerCrop()
+                .into(holder.imageViewItemImage);
+        holder.textViewItemName.setText(dataItem.getItemName());
+        holder.textViewItemPrice.setText(String.valueOf(dataItem.getItemPrice()));
+        holder.textViewItemWeight.setText(String.valueOf(dataItem.getItemWeight()));
 
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return dataItems.size();
     }
 
     public class ItemsViewHolder extends RecyclerView.ViewHolder {
+        TextView textViewItemName, textViewItemPrice, textViewItemWeight;
+        ImageView imageViewItemImage;
         public ItemsViewHolder(@NonNull View itemView) {
             super(itemView);
+
+            textViewItemName = itemView.findViewById(R.id.txt_item_name);
+            textViewItemPrice = itemView.findViewById(R.id.txt_item_price);
+            textViewItemWeight = itemView.findViewById(R.id.txt_item_weight);
+            imageViewItemImage = itemView.findViewById(R.id.img_items);
         }
     }
 
