@@ -15,6 +15,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -38,7 +41,7 @@ import retrofit2.Response;
  * Use the {@link HomeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements ItemsAdapter.ItemsItemClickListener{
 
     private ArrayList<DataItem> dataItemArrayList = new ArrayList<>();
     private RecyclerView recyclerView;
@@ -120,9 +123,8 @@ public class HomeFragment extends Fragment {
                 Log.d("RESULT", "RESPONSE" + response.code());
                 if (response.body() != null) {
                     dataItemArrayList.addAll(response.body().getDataItems());
-                    Log.d("DATA", dataItemArrayList.toString());
                 }
-                itemsAdapter = new ItemsAdapter(dataItemArrayList, getActivity().getApplicationContext());
+                itemsAdapter = new ItemsAdapter(dataItemArrayList, getActivity().getApplicationContext(), HomeFragment.this::itemsOnItemClick);
                 recyclerView.setAdapter(itemsAdapter);
             }
 
@@ -172,5 +174,21 @@ public class HomeFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void itemsOnItemClick(DataItem dataItem) {
+//        Fragment fragmentItemsDetail = ItemDetailFragment.newInstance(dataItem.getItemName(), String.valueOf(dataItem.getItemPrice()));
+//        FragmentManager fragmentManager = getChildFragmentManager();
+//
+//        fragmentManager.beginTransaction()
+//                .replace(R.id.homeHostFragment, fragmentItemsDetail, null)
+//                .setReorderingAllowed(true)
+//                .addToBackStack(null)
+//                .commit();
+        NavHostFragment navHostFragment = (NavHostFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.homeHostFragment);
+        NavController navController = navHostFragment.getNavController();
+
+        navController.navigate(R.id.itemDetailFragment);
     }
 }

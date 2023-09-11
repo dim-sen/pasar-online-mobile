@@ -21,9 +21,12 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemsViewHol
     private ArrayList<DataItem> dataItems;
     private Context context;
 
-    public ItemsAdapter(ArrayList<DataItem> dataItems, Context context) {
+    private ItemsItemClickListener itemsItemClickListener;
+
+    public ItemsAdapter(ArrayList<DataItem> dataItems, Context context, ItemsItemClickListener itemsItemClickListener) {
         this.dataItems = dataItems;
         this.context = context;
+        this.itemsItemClickListener = itemsItemClickListener;
     }
 
     @NonNull
@@ -43,6 +46,12 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemsViewHol
         holder.textViewItemName.setText(dataItem.getItemName());
         holder.textViewItemPrice.setText(String.valueOf(dataItem.getItemPrice()));
         holder.textViewItemWeight.setText(String.valueOf(dataItem.getItemWeight()));
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                itemsItemClickListener.itemsOnItemClick(dataItem);
+            }
+        });
 
     }
 
@@ -68,5 +77,9 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemsViewHol
         dataItems = new ArrayList<>();
         dataItems.addAll(dataItemArrayList);
         notifyDataSetChanged();
+    }
+
+    public interface ItemsItemClickListener {
+        void itemsOnItemClick(DataItem dataItem);
     }
 }
