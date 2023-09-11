@@ -66,10 +66,10 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemsViewHol
         public ItemsViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            textViewItemName = itemView.findViewById(R.id.txt_item_name);
-            textViewItemPrice = itemView.findViewById(R.id.txt_item_price);
-            textViewItemWeight = itemView.findViewById(R.id.txt_item_weight);
-            imageViewItemImage = itemView.findViewById(R.id.img_items);
+            textViewItemName = itemView.findViewById(R.id.txtItemName);
+            textViewItemPrice = itemView.findViewById(R.id.txtItemPrice);
+            textViewItemWeight = itemView.findViewById(R.id.txtItemWeight);
+            imageViewItemImage = itemView.findViewById(R.id.imgItems);
         }
     }
 

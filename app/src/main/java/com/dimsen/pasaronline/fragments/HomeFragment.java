@@ -15,7 +15,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -25,7 +24,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.dimsen.pasaronline.R;
 import com.dimsen.pasaronline.adapters.ItemsAdapter;
 import com.dimsen.pasaronline.data.DataItem;
-import com.dimsen.pasaronline.data.Items;
 import com.dimsen.pasaronline.requests.ApiService;
 import com.dimsen.pasaronline.responses.ItemsResponse;
 import com.dimsen.pasaronline.utils.ItemsApi;
@@ -156,7 +154,7 @@ public class HomeFragment extends Fragment implements ItemsAdapter.ItemsItemClic
             public boolean onQueryTextChange(String newText) {
                 ArrayList<DataItem> dataItems = new ArrayList<>();
 
-                for (DataItem dataItem : dataItems) {
+                for (DataItem dataItem : dataItemArrayList) {
                     String itemName = dataItem.getItemName().toLowerCase();
                     if (itemName.contains(newText.toLowerCase())) {
                         dataItems.add(dataItem);
@@ -172,23 +170,15 @@ public class HomeFragment extends Fragment implements ItemsAdapter.ItemsItemClic
     }
 
     @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
     public void itemsOnItemClick(DataItem dataItem) {
-//        Fragment fragmentItemsDetail = ItemDetailFragment.newInstance(dataItem.getItemName(), String.valueOf(dataItem.getItemPrice()));
-//        FragmentManager fragmentManager = getChildFragmentManager();
-//
-//        fragmentManager.beginTransaction()
-//                .replace(R.id.homeHostFragment, fragmentItemsDetail, null)
-//                .setReorderingAllowed(true)
-//                .addToBackStack(null)
-//                .commit();
+        Log.d("dataItemArrayList", String.valueOf(dataItemArrayList));
+        Bundle itemsBundle = new Bundle();
+        itemsBundle.putParcelableArrayList("items", dataItemArrayList);
+        Log.d("itemsBundle", String.valueOf(itemsBundle));
+
         NavHostFragment navHostFragment = (NavHostFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.homeHostFragment);
         NavController navController = navHostFragment.getNavController();
 
-        navController.navigate(R.id.itemDetailFragment);
+        navController.navigate(R.id.itemDetailFragment, itemsBundle);
     }
 }

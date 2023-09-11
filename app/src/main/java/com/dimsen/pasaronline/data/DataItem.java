@@ -1,8 +1,13 @@
 package com.dimsen.pasaronline.data;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
 import com.google.gson.annotations.SerializedName;
 
-public class DataItem{
+public class DataItem implements Parcelable {
 
 	@SerializedName("item_weight")
 	private int itemWeight;
@@ -21,6 +26,25 @@ public class DataItem{
 
 	@SerializedName("category_dao")
 	private CategoryDao categoryDao;
+
+	public DataItem(Parcel in) {
+		itemWeight = in.readInt();
+		itemPrice = in.readInt();
+		itemName = in.readString();
+		id = in.readInt();
+	}
+
+	public static final Creator<DataItem> CREATOR = new Creator<DataItem>() {
+		@Override
+		public DataItem createFromParcel(Parcel in) {
+			return new DataItem(in);
+		}
+
+		@Override
+		public DataItem[] newArray(int size) {
+			return new DataItem[size];
+		}
+	};
 
 	public void setItemWeight(int itemWeight){
 		this.itemWeight = itemWeight;
@@ -82,4 +106,17 @@ public class DataItem{
 			",category_dao = '" + categoryDao + '\'' + 
 			"}";
 		}
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(@NonNull Parcel dest, int flags) {
+		dest.writeInt(itemWeight);
+		dest.writeInt(itemPrice);
+		dest.writeString(itemName);
+		dest.writeInt(id);
+	}
 }
