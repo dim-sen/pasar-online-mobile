@@ -1,15 +1,18 @@
 package com.dimsen.pasaronline.fragments;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+
+import com.bumptech.glide.Glide;
 import com.dimsen.pasaronline.R;
 import com.dimsen.pasaronline.data.DataItem;
 
@@ -21,7 +24,8 @@ import java.util.ArrayList;
  * create an instance of this fragment.
  */
 public class ItemDetailFragment extends Fragment {
-    private TextView itemNameTextView;
+    private TextView itemNameTextView, itemPriceTextView, itemWeightTextView, itemStockTextView;
+    private ImageView itemImageImageView;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -69,20 +73,45 @@ public class ItemDetailFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_item_detail, container, false);
 
-        itemNameTextView = view.findViewById(R.id.txtDetailItemName);
-        itemNameTextView.setText("This");
+        Toolbar toolbarItemDetail = view.findViewById(R.id.toolbarItemDetail);
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbarItemDetail);
+        ((AppCompatActivity) requireActivity()).getSupportActionBar().setTitle("");
 
+        ((AppCompatActivity) requireActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbarItemDetail.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                requireActivity().onBackPressed();
+            }
+        });
+
+        itemNameTextView = view.findViewById(R.id.txtDetailItemName);
+        itemPriceTextView = view.findViewById(R.id.txtDetailItemPrice);
+        itemWeightTextView = view.findViewById(R.id.txtDetailItemWeight);
+        itemStockTextView = view.findViewById(R.id.txtDetailItemStock);
+        itemImageImageView = view.findViewById(R.id.imgDetailItemImage);
+
+        getArgumentsParcelable();
+
+        return view;
+    }
+
+    public void getArgumentsParcelable() {
         Bundle bundle = getArguments();
         Log.d("Bundle Content", String.valueOf(bundle));
         if (bundle != null) {
             ArrayList<DataItem> detailDataItemArrayList = bundle.getParcelableArrayList("items");
             if (detailDataItemArrayList != null) {
                 DataItem detailDataItem = detailDataItemArrayList.get(0);
+                Glide.with(getContext())
+                                .load("data:image/jpeg;base64," + detailDataItem.getItemImage())
+                                        .centerCrop()
+                                                .into(itemImageImageView);
                 itemNameTextView.setText(detailDataItem.getItemName());
+                itemPriceTextView.setText(String.valueOf(detailDataItem.getItemPrice()));
+                itemWeightTextView.setText(String.valueOf(detailDataItem.getItemWeight()));
                 Log.d("Parcel Items", String.valueOf(detailDataItemArrayList.size()));
             }
         }
-
-        return view;
     }
 }

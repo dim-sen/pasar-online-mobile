@@ -7,7 +7,9 @@ import androidx.annotation.NonNull;
 
 import com.google.gson.annotations.SerializedName;
 
-public class DataItem implements Parcelable {
+import java.util.Arrays;
+
+public class DataItem implements Parcelable{
 
 	@SerializedName("item_weight")
 	private int itemWeight;
@@ -16,7 +18,7 @@ public class DataItem implements Parcelable {
 	private int itemPrice;
 
 	@SerializedName("item_image")
-	private Object itemImage;
+	private String itemImage;
 
 	@SerializedName("item_name")
 	private String itemName;
@@ -27,9 +29,10 @@ public class DataItem implements Parcelable {
 	@SerializedName("category_dao")
 	private CategoryDao categoryDao;
 
-	public DataItem(Parcel in) {
+	protected DataItem(Parcel in) {
 		itemWeight = in.readInt();
 		itemPrice = in.readInt();
+		itemImage = in.readString();
 		itemName = in.readString();
 		id = in.readInt();
 	}
@@ -46,66 +49,65 @@ public class DataItem implements Parcelable {
 		}
 	};
 
-	public void setItemWeight(int itemWeight){
-		this.itemWeight = itemWeight;
-	}
-
-	public int getItemWeight(){
+	public int getItemWeight() {
 		return itemWeight;
 	}
 
-	public void setItemPrice(int itemPrice){
-		this.itemPrice = itemPrice;
+	public void setItemWeight(int itemWeight) {
+		this.itemWeight = itemWeight;
 	}
 
-	public int getItemPrice(){
+	public int getItemPrice() {
 		return itemPrice;
 	}
 
-	public void setItemImage(Object itemImage){
-		this.itemImage = itemImage;
+	public void setItemPrice(int itemPrice) {
+		this.itemPrice = itemPrice;
 	}
 
-	public Object getItemImage(){
+	public String getItemImage() {
 		return itemImage;
 	}
 
-	public void setItemName(String itemName){
-		this.itemName = itemName;
+	public void setItemImage(String itemImage) {
+		this.itemImage = itemImage;
 	}
 
-	public String getItemName(){
+	public String getItemName() {
 		return itemName;
 	}
 
-	public void setId(int id){
-		this.id = id;
+	public void setItemName(String itemName) {
+		this.itemName = itemName;
 	}
 
-	public int getId(){
+	public int getId() {
 		return id;
 	}
 
-	public void setCategoryDao(CategoryDao categoryDao){
-		this.categoryDao = categoryDao;
+	public void setId(int id) {
+		this.id = id;
 	}
 
-	public CategoryDao getCategoryDao(){
+	public CategoryDao getCategoryDao() {
 		return categoryDao;
 	}
 
+	public void setCategoryDao(CategoryDao categoryDao) {
+		this.categoryDao = categoryDao;
+	}
+
 	@Override
- 	public String toString(){
-		return 
-			"DataItem{" + 
-			"item_weight = '" + itemWeight + '\'' + 
-			",item_price = '" + itemPrice + '\'' + 
-			",item_image = '" + itemImage + '\'' + 
-			",item_name = '" + itemName + '\'' + 
-			",id = '" + id + '\'' + 
-			",category_dao = '" + categoryDao + '\'' + 
-			"}";
-		}
+	public String toString() {
+		return "DataItem{" +
+				"itemWeight=" + itemWeight +
+				", itemPrice=" + itemPrice +
+				", itemImage='" + itemImage + '\'' +
+				", itemName='" + itemName + '\'' +
+				", id=" + id +
+				", categoryDao=" + categoryDao +
+				'}';
+	}
 
 	@Override
 	public int describeContents() {
@@ -116,6 +118,7 @@ public class DataItem implements Parcelable {
 	public void writeToParcel(@NonNull Parcel dest, int flags) {
 		dest.writeInt(itemWeight);
 		dest.writeInt(itemPrice);
+		dest.writeString(itemImage);
 		dest.writeString(itemName);
 		dest.writeInt(id);
 	}

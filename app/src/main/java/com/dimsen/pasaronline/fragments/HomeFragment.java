@@ -90,8 +90,8 @@ public class HomeFragment extends Fragment implements ItemsAdapter.ItemsItemClic
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-        Toolbar toolbar = view.findViewById(R.id.toolbarHome);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        Toolbar toolbarHome = view.findViewById(R.id.toolbarHome);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbarHome);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("");
         setHasOptionsMenu(true);
 
