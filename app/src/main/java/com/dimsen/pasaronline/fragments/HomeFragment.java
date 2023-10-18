@@ -22,7 +22,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dimsen.pasaronline.R;
-import com.dimsen.pasaronline.adapters.ItemsAdapter;
+import com.dimsen.pasaronline.adapters.ItemAdapter;
 import com.dimsen.pasaronline.data.DataItem;
 import com.dimsen.pasaronline.requests.ApiService;
 import com.dimsen.pasaronline.responses.ItemsResponse;
@@ -39,11 +39,11 @@ import retrofit2.Response;
  * Use the {@link HomeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HomeFragment extends Fragment implements ItemsAdapter.ItemsItemClickListener{
+public class HomeFragment extends Fragment implements ItemAdapter.ItemsItemClickListener{
 
     private ArrayList<DataItem> dataItemArrayList = new ArrayList<>();
     private RecyclerView recyclerView;
-    private ItemsAdapter itemsAdapter;
+    private ItemAdapter itemsAdapter;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -122,7 +122,7 @@ public class HomeFragment extends Fragment implements ItemsAdapter.ItemsItemClic
                 if (response.body() != null) {
                     dataItemArrayList.addAll(response.body().getDataItems());
                 }
-                itemsAdapter = new ItemsAdapter(dataItemArrayList, getActivity().getApplicationContext(), HomeFragment.this::itemsOnItemClick);
+                itemsAdapter = new ItemAdapter(dataItemArrayList, getActivity().getApplicationContext(), HomeFragment.this::itemsOnItemClick);
                 recyclerView.setAdapter(itemsAdapter);
             }
 
@@ -171,9 +171,9 @@ public class HomeFragment extends Fragment implements ItemsAdapter.ItemsItemClic
 
     @Override
     public void itemsOnItemClick(DataItem dataItem) {
-        Log.d("dataItemArrayList", String.valueOf(dataItemArrayList));
+        Log.d("dataItem", String.valueOf(dataItem));
         Bundle itemsBundle = new Bundle();
-        itemsBundle.putParcelableArrayList("items", dataItemArrayList);
+        itemsBundle.putParcelable("items", dataItem);
         Log.d("itemsBundle", String.valueOf(itemsBundle));
 
         NavHostFragment navHostFragment = (NavHostFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.homeHostFragment);

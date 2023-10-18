@@ -1,6 +1,5 @@
 package com.dimsen.pasaronline.utils;
 
-import com.dimsen.pasaronline.data.Items;
 import com.dimsen.pasaronline.responses.ItemsResponse;
 
 import retrofit2.Call;

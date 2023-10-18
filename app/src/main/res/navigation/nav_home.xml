@@ -13,20 +13,136 @@
         <action
             android:id="@+id/action_homeFragment_to_itemDetailFragment"
             app:destination="@id/itemDetailFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_packageDetailFragment"
+            app:destination="@id/packageDetailFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_packageFragment"
+            app:destination="@id/packageFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
     </fragment>
     <fragment
         android:id="@+id/cartFragment"
         android:name="com.dimsen.pasaronline.fragments.CartFragment"
         android:label="fragment_cart"
-        tools:layout="@layout/fragment_cart" />
+        tools:layout="@layout/fragment_cart" >
+        <action
+            android:id="@+id/action_cartFragment_to_checkoutFragment"
+            app:destination="@id/checkoutFragment" />
+    </fragment>
     <fragment
         android:id="@+id/transactionFragment"
         android:name="com.dimsen.pasaronline.fragments.TransactionFragment"
         android:label="fragment_transaction"
-        tools:layout="@layout/fragment_transaction" />
+        tools:layout="@layout/fragment_transaction" >
+        <action
+            android:id="@+id/action_transactionFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_transactionFragment_to_orderDetailFragment"
+            app:destination="@id/orderDetailFragment" />
+        <action
+            android:id="@+id/action_transactionFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+    </fragment>
     <fragment
         android:id="@+id/itemDetailFragment"
         android:name="com.dimsen.pasaronline.fragments.ItemDetailFragment"
         android:label="fragment_item_detail"
-        tools:layout="@layout/fragment_item_detail" />
+        tools:layout="@layout/fragment_item_detail" >
+        <action
+            android:id="@+id/action_itemDetailFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/packageDetailFragment"
+        android:name="com.dimsen.pasaronline.fragments.PackageDetailFragment"
+        android:label="PackageDetailFragment" >
+        <action
+            android:id="@+id/action_packageDetailFragment_to_packageFragment"
+            app:destination="@id/packageFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/packageFragment"
+        android:name="com.dimsen.pasaronline.fragments.PackageFragment"
+        android:label="fragment_package"
+        tools:layout="@layout/fragment_package" />
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.dimsen.pasaronline.fragments.LoginFragment"
+        android:label="LoginFragment" >
+        <action
+            android:id="@+id/action_loginFragment_to_registerFragment"
+            app:destination="@id/registerFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="com.dimsen.pasaronline.fragments.RegisterFragment"
+        android:label="RegisterFragment" >
+        <action
+            android:id="@+id/action_registerFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_registerFragment_to_otpVerifyFragment"
+            app:destination="@id/otpVerifyFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/otpVerifyFragment"
+        android:name="com.dimsen.pasaronline.fragments.OtpVerifyFragment"
+        android:label="OtpVerifyFragment" >
+        <action
+            android:id="@+id/action_otpVerifyFragment_to_addLocationFragment"
+            app:destination="@id/addLocationFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addLocationFragment"
+        android:name="com.dimsen.pasaronline.fragments.AddLocationFragment"
+        android:label="AddLocationFragment" />
+    <fragment
+        android:id="@+id/checkoutFragment"
+        android:name="com.dimsen.pasaronline.fragments.CheckoutFragment"
+        android:label="CheckoutFragment" >
+        <action
+            android:id="@+id/action_checkoutFragment_to_paymentFragment"
+            app:destination="@id/paymentFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/paymentFragment"
+        android:name="com.dimsen.pasaronline.fragments.PaymentFragment"
+        android:label="PaymentFragment" />
+    <fragment
+        android:id="@+id/orderDetailFragment"
+        android:name="com.dimsen.pasaronline.fragments.OrderDetailFragment"
+        android:label="OrderDetailFragment" >
+        <action
+            android:id="@+id/action_orderDetailFragment_to_orderStatusFragment"
+            app:destination="@id/orderStatusFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/orderStatusFragment"
+        android:name="com.dimsen.pasaronline.fragments.OrderStatusFragment"
+        android:label="fragment_order_status"
+        tools:layout="@layout/fragment_order_status" />
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.dimsen.pasaronline.fragments.ProfileFragment"
+        android:label="ProfileFragment" >
+        <action
+            android:id="@+id/action_profileFragment_to_addressFragment"
+            app:destination="@id/addressFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addressFragment"
+        android:name="com.dimsen.pasaronline.fragments.AddressFragment"
+        android:label="fragment_address"
+        tools:layout="@layout/fragment_address" >
+        <action
+            android:id="@+id/action_addressFragment_to_addLocationFragment"
+            app:destination="@id/addLocationFragment" />
+    </fragment>
 </navigation>

@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarOtp"
+        style="@style/Widget.MaterialComponents.Toolbar.Primary"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:elevation="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/titleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Phone Number OTP Verification"
+        android:textColor="#DE000000"
+        android:textSize="20sp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbarOtp" />
+
+    <TextView
+        android:id="@+id/subtitleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="OTP code has sent to"
+        android:textColor="#DE000000"
+        android:textSize="16sp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleText" />
+
+    <TextView
+        android:id="@+id/phoneNumberTextOtp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="+6280000000000"
+        android:textColor="#DE000000"
+        android:textSize="16sp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/subtitleText" />
+
+    <!-- OTP Code Input Fields -->
+    <LinearLayout
+        android:id="@+id/otpCodeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/phoneNumberTextOtp">
+
+        <EditText
+            android:id="@+id/otp1"
+            android:layout_width="36dp"
+            android:layout_height="48dp"
+            android:gravity="center"
+            android:hint="0"
+            android:inputType="number"
+            android:textColor="#DE000000"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/otp2"
+            android:layout_width="36dp"
+            android:layout_height="48dp"
+            android:gravity="center"
+            android:hint="0"
+            android:inputType="number"
+            android:textColor="#DE000000"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/otp3"
+            android:layout_width="36dp"
+            android:layout_height="48dp"
+            android:gravity="center"
+            android:hint="0"
+            android:inputType="number"
+            android:textColor="#DE000000"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/otp4"
+            android:layout_width="36dp"
+            android:layout_height="48dp"
+            android:gravity="center"
+            android:hint="0"
+            android:inputType="number"
+            android:textColor="#DE000000"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/otp5"
+            android:layout_width="36dp"
+            android:layout_height="48dp"
+            android:gravity="center"
+            android:hint="0"
+            android:inputType="number"
+            android:textColor="#DE000000"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/otp6"
+            android:layout_width="36dp"
+            android:layout_height="48dp"
+            android:gravity="center"
+            android:hint="0"
+            android:inputType="number"
+            android:textColor="#DE000000"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+    <!-- OTP Resend Text -->
+    <TextView
+        android:id="@+id/otpResendText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Haven't received the code yet? Resend"
+        android:textColor="#DE000000"
+        android:textSize="12sp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/otpCodeLayout" />
+
+    <!-- Next Button -->
+    <Button
+        android:id="@+id/nextButton"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:background="#1453F6"
+        android:text="NEXT"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/otpResendText" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -11,6 +11,12 @@ import java.util.Arrays;
 
 public class DataItem implements Parcelable{
 
+	@SerializedName("item_description")
+	private String itemDescription;
+
+	@SerializedName("item_stock")
+	private int itemStock;
+
 	@SerializedName("item_weight")
 	private int itemWeight;
 
@@ -30,6 +36,8 @@ public class DataItem implements Parcelable{
 	private CategoryDao categoryDao;
 
 	protected DataItem(Parcel in) {
+		itemDescription = in.readString();
+		itemStock = in.readInt();
 		itemWeight = in.readInt();
 		itemPrice = in.readInt();
 		itemImage = in.readString();
@@ -48,6 +56,22 @@ public class DataItem implements Parcelable{
 			return new DataItem[size];
 		}
 	};
+
+	public String getItemDescription() {
+		return itemDescription;
+	}
+
+	public void setItemDescription(String itemDescription) {
+		this.itemDescription = itemDescription;
+	}
+
+	public int getItemStock() {
+		return itemStock;
+	}
+
+	public void setItemStock(int itemStock) {
+		this.itemStock = itemStock;
+	}
 
 	public int getItemWeight() {
 		return itemWeight;
@@ -100,7 +124,9 @@ public class DataItem implements Parcelable{
 	@Override
 	public String toString() {
 		return "DataItem{" +
-				"itemWeight=" + itemWeight +
+				"itemDescription='" + itemDescription + '\'' +
+				", itemStock=" + itemStock +
+				", itemWeight=" + itemWeight +
 				", itemPrice=" + itemPrice +
 				", itemImage='" + itemImage + '\'' +
 				", itemName='" + itemName + '\'' +
@@ -116,6 +142,8 @@ public class DataItem implements Parcelable{
 
 	@Override
 	public void writeToParcel(@NonNull Parcel dest, int flags) {
+		dest.writeString(itemDescription);
+		dest.writeInt(itemStock);
 		dest.writeInt(itemWeight);
 		dest.writeInt(itemPrice);
 		dest.writeString(itemImage);

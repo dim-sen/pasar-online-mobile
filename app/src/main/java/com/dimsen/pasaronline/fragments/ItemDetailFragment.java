@@ -24,7 +24,7 @@ import java.util.ArrayList;
  * create an instance of this fragment.
  */
 public class ItemDetailFragment extends Fragment {
-    private TextView itemNameTextView, itemPriceTextView, itemWeightTextView, itemStockTextView;
+    private TextView itemNameTextView, itemPriceTextView, itemWeightTextView, itemStockTextView, itemDescriptionTextView;
     private ImageView itemImageImageView;
 
     // TODO: Rename parameter arguments, choose names that match
@@ -89,6 +89,7 @@ public class ItemDetailFragment extends Fragment {
         itemPriceTextView = view.findViewById(R.id.txtDetailItemPrice);
         itemWeightTextView = view.findViewById(R.id.txtDetailItemWeight);
         itemStockTextView = view.findViewById(R.id.txtDetailItemStock);
+        itemDescriptionTextView = view.findViewById(R.id.txtDetailItemDescription);
         itemImageImageView = view.findViewById(R.id.imgDetailItemImage);
 
         getArgumentsParcelable();
@@ -100,17 +101,17 @@ public class ItemDetailFragment extends Fragment {
         Bundle bundle = getArguments();
         Log.d("Bundle Content", String.valueOf(bundle));
         if (bundle != null) {
-            ArrayList<DataItem> detailDataItemArrayList = bundle.getParcelableArrayList("items");
-            if (detailDataItemArrayList != null) {
-                DataItem detailDataItem = detailDataItemArrayList.get(0);
+            DataItem dataItem = bundle.getParcelable("items");
+            if (dataItem != null) {
                 Glide.with(getContext())
-                                .load("data:image/jpeg;base64," + detailDataItem.getItemImage())
+                                .load("data:image/jpeg;base64," + dataItem.getItemImage())
                                         .centerCrop()
                                                 .into(itemImageImageView);
-                itemNameTextView.setText(detailDataItem.getItemName());
-                itemPriceTextView.setText(String.valueOf(detailDataItem.getItemPrice()));
-                itemWeightTextView.setText(String.valueOf(detailDataItem.getItemWeight()));
-                Log.d("Parcel Items", String.valueOf(detailDataItemArrayList.size()));
+                itemNameTextView.setText(dataItem.getItemName());
+                itemPriceTextView.setText(String.valueOf(dataItem.getItemPrice()));
+                itemWeightTextView.setText(String.valueOf(dataItem.getItemWeight()));
+                itemStockTextView.setText(String.valueOf(dataItem.getItemStock()));
+                itemDescriptionTextView.setText(dataItem.getItemDescription());
             }
         }
     }

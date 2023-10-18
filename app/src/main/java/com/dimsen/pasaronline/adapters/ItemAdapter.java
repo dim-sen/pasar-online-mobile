@@ -16,14 +16,14 @@ import com.dimsen.pasaronline.data.DataItem;
 
 import java.util.ArrayList;
 
-public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemsViewHolder> {
+public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemsViewHolder> {
 
     private ArrayList<DataItem> dataItems;
     private Context context;
 
     private ItemsItemClickListener itemsItemClickListener;
 
-    public ItemsAdapter(ArrayList<DataItem> dataItems, Context context, ItemsItemClickListener itemsItemClickListener) {
+    public ItemAdapter(ArrayList<DataItem> dataItems, Context context, ItemsItemClickListener itemsItemClickListener) {
         this.dataItems = dataItems;
         this.context = context;
         this.itemsItemClickListener = itemsItemClickListener;
@@ -31,13 +31,13 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemsViewHol
 
     @NonNull
     @Override
-    public ItemsAdapter.ItemsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ItemAdapter.ItemsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_items, parent, false);
         return new ItemsViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ItemsAdapter.ItemsViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ItemAdapter.ItemsViewHolder holder, int position) {
         DataItem dataItem = dataItems.get(position);
         Glide.with(holder.imageViewItemImage.getContext())
                 .load("data:image/jpeg;base64," + dataItem.getItemImage())
