@@ -12,21 +12,25 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.dimsen.pasaronline.R;
-import com.dimsen.pasaronline.data.DataItem;
+import com.dimsen.pasaronline.data.Item;
+import com.dimsen.pasaronline.utils.OnItemClickListener;
 
 import java.util.ArrayList;
 
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemsViewHolder> {
 
-    private ArrayList<DataItem> dataItems;
+    private ArrayList<Item> dataItems;
     private Context context;
 
-    private ItemsItemClickListener itemsItemClickListener;
+    private OnItemClickListener itemsOnItemClick;
 
-    public ItemAdapter(ArrayList<DataItem> dataItems, Context context, ItemsItemClickListener itemsItemClickListener) {
+    private ArrayList<Item> originalDataItems;
+
+    public ItemAdapter(ArrayList<Item> dataItems, Context context, OnItemClickListener itemsOnItemClick) {
         this.dataItems = dataItems;
         this.context = context;
-        this.itemsItemClickListener = itemsItemClickListener;
+        this.itemsOnItemClick = itemsOnItemClick;
+        this.originalDataItems = new ArrayList<>(dataItems);
     }
 
     @NonNull
@@ -38,21 +42,20 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemsViewHolde
 
     @Override
     public void onBindViewHolder(@NonNull ItemAdapter.ItemsViewHolder holder, int position) {
-        DataItem dataItem = dataItems.get(position);
+        Item dataItem = dataItems.get(position);
         Glide.with(holder.imageViewItemImage.getContext())
                 .load("data:image/jpeg;base64," + dataItem.getItemImage())
                 .centerCrop()
                 .into(holder.imageViewItemImage);
         holder.textViewItemName.setText(dataItem.getItemName());
-        holder.textViewItemPrice.setText(String.valueOf(dataItem.getItemPrice()));
-        holder.textViewItemWeight.setText(String.valueOf(dataItem.getItemWeight()));
+        holder.textViewItemPrice.setText("Rp " + dataItem.getItemPrice());
+        holder.textViewItemWeight.setText(dataItem.getItemWeight() + " gram");
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                itemsItemClickListener.itemsOnItemClick(dataItem);
+                itemsOnItemClick.onItemClicked(dataItem);
             }
         });
-
     }
 
     @Override
@@ -69,17 +72,19 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemsViewHolde
             textViewItemName = itemView.findViewById(R.id.txtItemName);
             textViewItemPrice = itemView.findViewById(R.id.txtItemPrice);
             textViewItemWeight = itemView.findViewById(R.id.txtItemWeight);
-            imageViewItemImage = itemView.findViewById(R.id.imgItems);
+            imageViewItemImage = itemView.findViewById(R.id.imgItemImage);
         }
     }
 
-    public void setFilter(ArrayList<DataItem> dataItemArrayList) {
+    public void setFilter(ArrayList<Item> dataItemArrayList) {
         dataItems = new ArrayList<>();
         dataItems.addAll(dataItemArrayList);
         notifyDataSetChanged();
     }
 
-    public interface ItemsItemClickListener {
-        void itemsOnItemClick(DataItem dataItem);
+    public void showAllItems() {
+        dataItems.clear();
+        dataItems.addAll(originalDataItems);
+        notifyDataSetChanged();
     }
 }

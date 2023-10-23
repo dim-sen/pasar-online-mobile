@@ -5,26 +5,30 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dimsen.pasaronline.R;
-import com.dimsen.pasaronline.data.DataItem;
+import com.dimsen.pasaronline.data.Category;
+import com.dimsen.pasaronline.utils.OnItemClickListener;
 
 import java.util.ArrayList;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHoler> {
 
-    private ArrayList<DataItem> dataCategories;
+    private ArrayList<Category> dataCategories;
     private Context context;
 
-    private CategoryItemClickListener categoryItemClickListener;
+    private OnItemClickListener categoryOnItemClick;
 
-    public CategoryAdapter(ArrayList<DataItem> dataCategories, Context context, CategoryItemClickListener categoryItemClickListener) {
+    private ItemAdapter itemAdapter;
+
+    public CategoryAdapter(ArrayList<Category> dataCategories, Context context, OnItemClickListener categoryOnItemClick) {
         this.dataCategories = dataCategories;
         this.context = context;
-        this.categoryItemClickListener = categoryItemClickListener;
+        this.categoryOnItemClick = categoryOnItemClick;
     }
 
     @NonNull
@@ -36,12 +40,12 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
     @Override
     public void onBindViewHolder(@NonNull CategoryAdapter.CategoryViewHoler holder, int position) {
-        DataItem dataCategory = dataCategories.get(position);
-        holder.textViewCategoryName.setText(dataCategory.getItemName());
+        Category dataCategory = dataCategories.get(position);
+        holder.textViewCategoryName.setText(dataCategory.getCategoryName());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                categoryItemClickListener.categoryOnItemClick(dataCategory);
+                categoryOnItemClick.onItemClicked(dataCategory);
             }
         });
     }
@@ -61,7 +65,9 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         }
     }
 
-    public interface CategoryItemClickListener {
-        void categoryOnItemClick(DataItem dataItem);
+    public void setFilter(ArrayList<Category> dataCategoryArrayList) {
+        dataCategories = new ArrayList<>();
+        dataCategories.addAll(dataCategoryArrayList);
+        notifyDataSetChanged();
     }
 }

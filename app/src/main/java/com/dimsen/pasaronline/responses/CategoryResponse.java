@@ -1,25 +1,25 @@
 package com.dimsen.pasaronline.responses;
 
-import com.dimsen.pasaronline.data.Item;
+import com.dimsen.pasaronline.data.Category;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
-public class ItemsResponse {
+public class CategoryResponse {
 
     @SerializedName(value = "data")
     @Expose
-    private ArrayList<Item> dataItems;
+    private ArrayList<Category> dataCategory;
 
-    public ArrayList<Item> getDataItems() {
-        return dataItems;
+    public ArrayList<Category> getDataCategory() {
+        return dataCategory;
     }
 
     @Override
     public String toString() {
-        return "ItemsResponse{" +
-                "dataItems=" + dataItems +
+        return "CategoryResponse{" +
+                "dataCategory=" + dataCategory +
                 '}';
     }
 }

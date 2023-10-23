@@ -28,7 +28,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="start"
-        android:cardCornerRadius="8dp"
         app:cardBackgroundColor="#FFFFFFFF"
         app:cardElevation="6dp"
         app:cardMaxElevation="6dp"

@@ -14,9 +14,7 @@ import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.dimsen.pasaronline.R;
-import com.dimsen.pasaronline.data.DataItem;
-
-import java.util.ArrayList;
+import com.dimsen.pasaronline.data.Item;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -85,12 +83,11 @@ public class ItemDetailFragment extends Fragment {
             }
         });
 
-        itemNameTextView = view.findViewById(R.id.txtDetailItemName);
-        itemPriceTextView = view.findViewById(R.id.txtDetailItemPrice);
-        itemWeightTextView = view.findViewById(R.id.txtDetailItemWeight);
-        itemStockTextView = view.findViewById(R.id.txtDetailItemStock);
-        itemDescriptionTextView = view.findViewById(R.id.txtDetailItemDescription);
-        itemImageImageView = view.findViewById(R.id.imgDetailItemImage);
+        itemImageImageView = view.findViewById(R.id.imgItemImageDetail);
+        itemNameTextView = view.findViewById(R.id.txtItemNameDetail);
+        itemWeightTextView = view.findViewById(R.id.txtItemWeightDetail);
+        itemPriceTextView = view.findViewById(R.id.txtItemPriceDetail);
+        itemDescriptionTextView = view.findViewById(R.id.txtItemDescriptionDetail);
 
         getArgumentsParcelable();
 
@@ -99,18 +96,16 @@ public class ItemDetailFragment extends Fragment {
 
     public void getArgumentsParcelable() {
         Bundle bundle = getArguments();
-        Log.d("Bundle Content", String.valueOf(bundle));
         if (bundle != null) {
-            DataItem dataItem = bundle.getParcelable("items");
+            Item dataItem = bundle.getParcelable("items");
             if (dataItem != null) {
                 Glide.with(getContext())
                                 .load("data:image/jpeg;base64," + dataItem.getItemImage())
                                         .centerCrop()
                                                 .into(itemImageImageView);
                 itemNameTextView.setText(dataItem.getItemName());
-                itemPriceTextView.setText(String.valueOf(dataItem.getItemPrice()));
-                itemWeightTextView.setText(String.valueOf(dataItem.getItemWeight()));
-                itemStockTextView.setText(String.valueOf(dataItem.getItemStock()));
+                itemPriceTextView.setText("Rp " + dataItem.getItemPrice());
+                itemWeightTextView.setText(dataItem.getItemWeight() + " gram");
                 itemDescriptionTextView.setText(dataItem.getItemDescription());
             }
         }

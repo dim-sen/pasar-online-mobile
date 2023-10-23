@@ -2,6 +2,7 @@ package com.dimsen.pasaronline.fragments;
 
 import android.app.SearchManager;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -9,6 +10,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,11 +26,20 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dimsen.pasaronline.R;
+import com.dimsen.pasaronline.adapters.CategoryAdapter;
 import com.dimsen.pasaronline.adapters.ItemAdapter;
-import com.dimsen.pasaronline.data.DataItem;
+import com.dimsen.pasaronline.adapters.PackageAdapter;
+import com.dimsen.pasaronline.data.Category;
+import com.dimsen.pasaronline.data.Item;
+import com.dimsen.pasaronline.data.Package;
 import com.dimsen.pasaronline.requests.ApiService;
+import com.dimsen.pasaronline.responses.CategoryResponse;
 import com.dimsen.pasaronline.responses.ItemsResponse;
+import com.dimsen.pasaronline.responses.PackageResponse;
+import com.dimsen.pasaronline.utils.CategoryApi;
 import com.dimsen.pasaronline.utils.ItemsApi;
+import com.dimsen.pasaronline.utils.OnItemClickListener;
+import com.dimsen.pasaronline.utils.PackageApi;
 
 import java.util.ArrayList;
 
@@ -39,11 +52,22 @@ import retrofit2.Response;
  * Use the {@link HomeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HomeFragment extends Fragment implements ItemAdapter.ItemsItemClickListener{
+public class HomeFragment extends Fragment implements OnItemClickListener {
 
-    private ArrayList<DataItem> dataItemArrayList = new ArrayList<>();
-    private RecyclerView recyclerView;
+    private ArrayList<Item> dataItemArrayList = new ArrayList<>();
+    private ArrayList<Category> categoryArrayList = new ArrayList<>();
+    private ArrayList<Package> packageArrayList = new ArrayList<>();
+    private ArrayList<Category> originalCategoryArrayList = new ArrayList<>();
+    private ArrayList<Package> originalPackageArrayList = new ArrayList<>();
+    private RecyclerView itemRecyclerView;
+    private RecyclerView categoryRecyclerView;
+    private RecyclerView packageRecyclerView;
     private ItemAdapter itemsAdapter;
+    private CategoryAdapter categoryAdapter;
+    private PackageAdapter packageAdapter;
+    private Category currentCategory = null;
+
+    private TextView textViewCategoryTitle, textViewPackageTitle;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -95,21 +119,86 @@ public class HomeFragment extends Fragment implements ItemAdapter.ItemsItemClick
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("");
         setHasOptionsMenu(true);
 
+        textViewCategoryTitle = view.findViewById(R.id.txtCategoryTitle);
+        textViewPackageTitle = view.findViewById(R.id.txtPackageTitle);
+
         initRecyclerView(view);
-        getApiResponse();
+        getItemResponse();
+        getCategoryResponse();
+        getPackageResponse();
         return view;
     }
 
+    private void getPackageResponse() {
+        PackageApi packageApi = ApiService.packageApi();
+        Call<PackageResponse> packageResponseCall = packageApi.PACKAGE_RESPONSE_CALL();
+
+        packageResponseCall.enqueue(new Callback<PackageResponse>() {
+            @Override
+            public void onResponse(Call<PackageResponse> call, Response<PackageResponse> response) {
+                packageArrayList.clear();
+                Log.d("PACKAGE", "onResponse: " + response.code());
+                if (response.body() != null) {
+                    packageArrayList.addAll(response.body().getDataPackage());
+                    originalPackageArrayList.addAll(packageArrayList);
+                }
+                packageAdapter = new PackageAdapter(packageArrayList, getActivity().getApplicationContext(), HomeFragment.this::onItemClicked);
+                packageRecyclerView.setAdapter(packageAdapter);
+            }
+
+            @Override
+            public void onFailure(Call<PackageResponse> call, Throwable t) {
+                Log.d("RESULT", "FAILURE", t);
+            }
+        });
+    }
+
+    private void getCategoryResponse() {
+        CategoryApi categoryApi = ApiService.categoryApi();
+        Call<CategoryResponse> categoryResponseCall = categoryApi.CATEGORY_RESPONSE_CALL();
+
+        categoryResponseCall.enqueue(new Callback<CategoryResponse>() {
+            @Override
+            public void onResponse(Call<CategoryResponse> call, Response<CategoryResponse> response) {
+                categoryArrayList.clear();
+                Log.d("CATEGORY", "onResponse: " + response.code());
+                if (response.body() != null) {
+                    categoryArrayList.addAll(response.body().getDataCategory());
+                    originalCategoryArrayList.addAll(categoryArrayList);
+                }
+                categoryAdapter = new CategoryAdapter(categoryArrayList, getActivity().getApplicationContext(), HomeFragment.this::onItemClicked);
+                categoryRecyclerView.setAdapter(categoryAdapter);
+            }
+
+            @Override
+            public void onFailure(Call<CategoryResponse> call, Throwable t) {
+                Log.d("RESULT", "FAILURE", t);
+            }
+        });
+    }
+
     private void initRecyclerView(View view) {
-        recyclerView = view.findViewById(R.id.recyclerItems);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new GridLayoutManager(requireContext(),
+        itemRecyclerView = view.findViewById(R.id.recyclerItems);
+        itemRecyclerView.setHasFixedSize(true);
+        itemRecyclerView.setLayoutManager(new GridLayoutManager(requireContext(),
                 2,
                 LinearLayoutManager.VERTICAL,
                 false));
+
+        categoryRecyclerView = view.findViewById(R.id.recyclerCategories);
+        categoryRecyclerView.setHasFixedSize(true);
+        categoryRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext(),
+                LinearLayoutManager.HORIZONTAL,
+                false));
+
+        packageRecyclerView = view.findViewById(R.id.recyclerPackages);
+        packageRecyclerView.setHasFixedSize(true);
+        packageRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext(),
+                LinearLayoutManager.HORIZONTAL,
+                false));
     }
 
-    private void getApiResponse() {
+    private void getItemResponse() {
         ItemsApi itemsApi = ApiService.getItemsApi();
 
         Call<ItemsResponse> itemsResponseCall = itemsApi.DATA_ITEM_CALL();
@@ -122,8 +211,8 @@ public class HomeFragment extends Fragment implements ItemAdapter.ItemsItemClick
                 if (response.body() != null) {
                     dataItemArrayList.addAll(response.body().getDataItems());
                 }
-                itemsAdapter = new ItemAdapter(dataItemArrayList, getActivity().getApplicationContext(), HomeFragment.this::itemsOnItemClick);
-                recyclerView.setAdapter(itemsAdapter);
+                itemsAdapter = new ItemAdapter(dataItemArrayList, getActivity().getApplicationContext(), HomeFragment.this::onItemClicked);
+                itemRecyclerView.setAdapter(itemsAdapter);
             }
 
             @Override
@@ -152,33 +241,82 @@ public class HomeFragment extends Fragment implements ItemAdapter.ItemsItemClick
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                ArrayList<DataItem> dataItems = new ArrayList<>();
+                ArrayList<Item> dataItems = new ArrayList<>();
 
-                for (DataItem dataItem : dataItemArrayList) {
+                for (Item dataItem : dataItemArrayList) {
                     String itemName = dataItem.getItemName().toLowerCase();
                     if (itemName.contains(newText.toLowerCase())) {
                         dataItems.add(dataItem);
                     }
                 }
-
                 itemsAdapter.setFilter(dataItems);
+
+                ArrayList<Category> categories = new ArrayList<>();
+                for (Category category : categoryArrayList) {
+                    String categoryName = category.getCategoryName().toLowerCase();
+                    if (categoryName.contains(newText.toLowerCase())) {
+                        categories.add(category);
+                    }
+                }
+                categoryAdapter.setFilter(categories);
+
+                ArrayList<Package> packages = new ArrayList<>();
+                for (Package aPackage : packageArrayList) {
+                    String packageName = aPackage.getPackageName().toLowerCase();
+                    if (packageName.contains(newText.toLowerCase())) {
+                        packages.add(aPackage);
+                    }
+                }
+                packageAdapter.setFilter(packages);
                 return true;
             }
+
         };
 
         searchView.setOnQueryTextListener(onQueryTextListener);
     }
 
     @Override
-    public void itemsOnItemClick(DataItem dataItem) {
-        Log.d("dataItem", String.valueOf(dataItem));
-        Bundle itemsBundle = new Bundle();
-        itemsBundle.putParcelable("items", dataItem);
-        Log.d("itemsBundle", String.valueOf(itemsBundle));
+    public void onItemClicked(Object model) {
+        if (model instanceof Item) {
+            Bundle itemsBundle = new Bundle();
+            itemsBundle.putParcelable("items", (Parcelable) model);
 
-        NavHostFragment navHostFragment = (NavHostFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.homeHostFragment);
-        NavController navController = navHostFragment.getNavController();
+            NavHostFragment navHostFragment = (NavHostFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.homeHostFragment);
+            NavController navController = navHostFragment.getNavController();
 
-        navController.navigate(R.id.itemDetailFragment, itemsBundle);
+            navController.navigate(R.id.itemDetailFragment, itemsBundle);
+        }
+
+        if (model instanceof Category) {
+            Category clickedCategory = (Category) model;
+
+            if (currentCategory != null && currentCategory.equals(clickedCategory)) {
+                currentCategory = null;
+                itemsAdapter.showAllItems();
+            } else {
+                currentCategory = clickedCategory;
+
+                ArrayList<Item> dataItems = new ArrayList<>();
+
+                for (Item dataItem : dataItemArrayList) {
+                    if (dataItem.getCategoryDao().getCategoryName().equals(clickedCategory.getCategoryName())) {
+                        dataItems.add(dataItem);
+                    }
+                }
+                itemsAdapter.setFilter(dataItems);
+                Toast.makeText(getActivity().getApplicationContext(), "Tap " + clickedCategory.getCategoryName() + " Kembali Untuk Menampilkan Semua", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        if (model instanceof Package) {
+            Bundle itemsBundle = new Bundle();
+            itemsBundle.putParcelable("packages", (Parcelable) model);
+
+            NavHostFragment navHostFragment = (NavHostFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.homeHostFragment);
+            NavController navController = navHostFragment.getNavController();
+
+            navController.navigate(R.id.packageDetailFragment, itemsBundle);
+        }
     }
 }
